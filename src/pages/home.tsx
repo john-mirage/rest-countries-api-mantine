@@ -3,25 +3,53 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Grid } from "@mantine/core";
+import { Box, Button, Center, Grid } from "@mantine/core";
 import { isEmpty, range } from "lodash";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
-const COUNTRIES_API_URL = "https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code";
+const COUNTRIES_PER_PAGE = 30;
 
 function Home() {
-    const [{ allCountries, countries, isLoading, isError }, setUrl, setPage] = UseCountries(COUNTRIES_API_URL);
+    const [{ allCountries, countries, isLoading, isError }, setRegion] = UseCountries();
+    const [pageNumber, setPageNumber] = useState(0);
+    const [page, setPage] = useState(0);
+    const [pageCountries, setPageCountries] = useState([]);
+    const { ref, inView } = useInView();
 
-    function handleRegion(newRegion: string | undefined) {
-        if (!!newRegion) {
-            setUrl(`https://restcountries.com/v2/region/${newRegion}?fields=name,population,region,capital,flags,alpha3Code`);
-        } else {
-            setUrl(COUNTRIES_API_URL);
+    useEffect(() => {
+        if (countries.length > 0) {
+            const division = (countries.length / COUNTRIES_PER_PAGE);
+            const hasMore = (countries.length % COUNTRIES_PER_PAGE) !== 0;
+            const basePageNumber = Math.floor(division);
+            setPageNumber(hasMore ? (basePageNumber + 1) : basePageNumber);
+            setPage(1);
         }
-    }
+    }, [countries]);
+
+    useEffect(() => {
+        if (page > 0) {
+            if (page < pageNumber) {
+                const countryNumber = page * COUNTRIES_PER_PAGE;
+                const newpageCountries = countries.slice(0, countryNumber);
+                setPageCountries(newpageCountries);
+            } else {
+                setPageCountries(countries);
+            }
+        }
+    }, [countries, page]);
+
+    useEffect(() => {
+        if (inView) {
+            if (page < pageNumber) {
+                setPage(page + 1);
+            }
+        }
+    }, [inView]);
 
     return (
         <>
-            <ToolBar countries={allCountries} handleRegion={handleRegion} />
+            <ToolBar countries={allCountries} handleRegion={setRegion} />
             <Grid gutter={40}>
                 {isLoading && isEmpty(countries)
                     ? (
@@ -32,7 +60,7 @@ function Home() {
                         ))
                     )
                     : (
-                        countries.map((country: HomeCountry) => (
+                        pageCountries.map((country: HomeCountry) => (
                             <Grid.Col span={4} key={country.alpha3Code}>
                                 <CountryCard country={country} />
                             </Grid.Col>
@@ -40,6 +68,7 @@ function Home() {
                     )
                 }
             </Grid>
+            <Box ref={ref} sx={{ height: 64 }} />
         </>
     );
 }

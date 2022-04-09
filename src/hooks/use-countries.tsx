@@ -1,23 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const COUNTRIES_PER_PAGES = 30;
+const COUNTRIES_API_URL = "https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code";
 
-function getPageNumber(countryNumber: number) {
-    const division = (countryNumber / COUNTRIES_PER_PAGES);
-    const hasMore = (countryNumber % COUNTRIES_PER_PAGES) !== 0;
-    const basePageNumber = Math.floor(division);
-    return hasMore ? (basePageNumber + 1) : basePageNumber;
-}
-
-function UseCountries(initialUrl: string) {
-    const [url, setUrl] = useState(initialUrl);
+function UseCountries() {
+    const [region, setRegion] = useState(null);
     const [allCountries, setAllCountries] = useState([]);
     const [countries, setCountries] = useState([]);
-    const [pages, setPages] = useState(0);
-    const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [calledOnce, setIsCalledOnce] = useState(false);
 
     useEffect(() => {
         let didCancel = false;
@@ -25,13 +17,18 @@ function UseCountries(initialUrl: string) {
             setIsError(false);
             setIsLoading(true);
             try {
-                const { data } = await axios(url);
-                if (!didCancel) {
-                    const pageNumber = getPageNumber(data.length);
-                    setPages(pageNumber);
-                    setAllCountries(data);
-                    if(page > 0) setPage(0);
-                    setPage(1);
+                if (!calledOnce) {
+                    const { data } = await axios(COUNTRIES_API_URL);
+                    if (!didCancel) {
+                        setCountries(data);
+                        setAllCountries(data);
+                        setIsCalledOnce(true);
+                    }
+                } else if (region) {
+                    const { data } = await axios(`https://restcountries.com/v2/region/${region}?fields=name,population,region,capital,flags,alpha3Code`);
+                    if (!didCancel) setCountries(data);
+                } else {
+                    setCountries(allCountries);
                 }
             } catch (error) {
                 setIsError(true);
@@ -42,21 +39,9 @@ function UseCountries(initialUrl: string) {
         return () => {
             didCancel = true;
         };
-    }, [url]);
+    }, [region]);
 
-    useEffect(() => {
-        if (page > 0) {
-            if (page < pages) {
-                const countryNumber = page * COUNTRIES_PER_PAGES;
-                const pageCountries = allCountries.slice(0, countryNumber);
-                setCountries(pageCountries);
-            } else if (page === pages) {
-                setCountries(allCountries);
-            }
-        }
-    }, [page]);
-
-    return [{ allCountries, countries, isLoading, isError }, setUrl, setPage];
+    return [{ allCountries, countries, isLoading, isError }, setRegion];
 }
 
 export default UseCountries;
