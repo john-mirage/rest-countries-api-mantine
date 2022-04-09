@@ -11,7 +11,12 @@ function TopAppBar() {
             <Container>
                 <Group position="apart" align="center" sx={{ paddingTop: 24, paddingBottom: 24, marginBottom: 32 }}>
                     <Text size="lg" weight={800}>Where in the world?</Text>
-                    <Button variant="subtle" color="gray" leftIcon={theme === "dark" ? <MoonIcon /> : <MoonOutlinedIcon />} onClick={() => toggleTheme()}>Dark Mode</Button>
+                    <Button
+                        variant="subtle"
+                        color="gray"
+                        leftIcon={theme === "dark" ? <MoonIcon /> : <MoonOutlinedIcon />}
+                        onClick={() => toggleTheme()}
+                    >Dark Mode</Button>
                 </Group>
             </Container>
         </Paper>
