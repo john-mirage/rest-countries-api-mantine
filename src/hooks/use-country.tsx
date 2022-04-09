@@ -14,7 +14,7 @@ function UseCountry(countryCode: string) {
             try {
                 const countryResult = await axios(`https://restcountries.com/v2/alpha/${countryCode}?fields=name,nativeName,population,region,subregion,capital,topLevelDomain,currencies,languages,borders,flag`);
                 const borderCountries = await Promise.all(countryResult.data.borders.map(async (borderCountryCode: string) => {
-                    let borderResult = await axios(`https://restcountries.com/v2/alpha/${borderCountryCode}?fields=name,alpha3code`);
+                    let borderResult = await axios(`https://restcountries.com/v2/alpha/${borderCountryCode}?fields=name,alpha3Code`);
                     return borderResult.data;
                 }));
                 if (!didCancel) {

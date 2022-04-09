@@ -3,7 +3,7 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Box, Button, Center, Grid } from "@mantine/core";
+import { Box, Grid } from "@mantine/core";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
