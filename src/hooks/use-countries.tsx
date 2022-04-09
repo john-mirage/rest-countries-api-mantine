@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const COUNTRIES_API_URL = "https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code";
-
 function UseCountries() {
     const [region, setRegion] = useState(null);
     const [allCountries, setAllCountries] = useState([]);
@@ -17,18 +15,18 @@ function UseCountries() {
             setIsError(false);
             setIsLoading(true);
             try {
-                if (!calledOnce) {
-                    const { data } = await axios(COUNTRIES_API_URL);
+                if (!region) {
+                    const { data } = await axios("https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code");
                     if (!didCancel) {
                         setCountries(data);
-                        setAllCountries(data);
-                        setIsCalledOnce(true);
+                        if (!calledOnce) {
+                            setAllCountries(data);
+                            setIsCalledOnce(true);
+                        }
                     }
-                } else if (region) {
+                } else {
                     const { data } = await axios(`https://restcountries.com/v2/region/${region}?fields=name,population,region,capital,flags,alpha3Code`);
                     if (!didCancel) setCountries(data);
-                } else {
-                    setCountries(allCountries);
                 }
             } catch (error) {
                 setIsError(true);

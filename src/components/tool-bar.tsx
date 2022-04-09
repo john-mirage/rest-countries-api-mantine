@@ -21,7 +21,7 @@ function ToolBar({ countries, handleRegion }: ToolBarProps) {
                 icon={<SearchIcon />}
                 rightSectionWidth={0}
                 onChange={(value) => navigate(`/rest-countries-api-mantine/country/${value}`)}
-                maxDropdownHeight={148}
+                maxDropdownHeight={300}
             />
             <Select
                 data={[

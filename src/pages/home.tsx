@@ -30,14 +30,16 @@ function Home() {
     useEffect(() => {
         if (page > 0) {
             if (page < pageNumber) {
+                console.log(`page: ${page} // pageNumber: ${pageNumber}`)
                 const countryNumber = page * COUNTRIES_PER_PAGE;
                 const newpageCountries = countries.slice(0, countryNumber);
                 setPageCountries(newpageCountries);
+                
             } else {
                 setPageCountries(countries);
             }
         }
-    }, [countries, page]);
+    }, [countries, page, pageNumber]);
 
     useEffect(() => {
         if (inView) {
