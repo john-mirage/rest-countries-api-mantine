@@ -10,7 +10,7 @@ ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="/rest-countries-api/" element={<App />}>
+                <Route path="/rest-countries-api-mantine/" element={<App />}>
                     <Route index element={<Home />} />
                     <Route path="country/:code" element={<Country />} />
                     <Route path="*" element={<NotFound />} />

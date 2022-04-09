@@ -1,15 +1,19 @@
 import { Select, MultiSelect, Group } from "@mantine/core";
 import SearchIcon from "@components/icons/search-icon";
+import { HomeCountry } from "@customTypes/country";
 
+interface ToolBarProps {
+    countries: HomeCountry[];
+}
 
-function ToolBar() {
+function ToolBar({ countries }: ToolBarProps) {
     return (
         <Group position="apart" align="center" sx={{ marginBottom: 32 }}>
             <Select
                 placeholder="Search a country"
                 searchable
                 nothingFound="No country found"
-                data={data.map((country) => country.name)}
+                data={countries.map((country) => country.name)}
                 icon={<SearchIcon />}
                 rightSectionWidth={0}
                 onChange={(value) => console.log(value)}

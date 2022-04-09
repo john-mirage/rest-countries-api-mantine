@@ -1,17 +1,17 @@
 import CountryCard from "@components/country-card";
 import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
+import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
 import { Grid } from "@mantine/core";
 import { isEmpty, range } from "lodash";
-import { HomeCountry } from "@customTypes/country";
 
 function Home() {
     const { countries, isLoading, isError} = UseCountries();
 
     return (
         <>
-            <ToolBar />
+            <ToolBar countries={countries} />
             <Grid gutter={40}>
                 {isLoading && isEmpty(countries)
                     ? (
@@ -24,7 +24,7 @@ function Home() {
                     : (
                         countries.map((country: HomeCountry) => (
                             <Grid.Col span={4} key={country.alpha3Code}>
-                                <CountryCard />
+                                <CountryCard country={country} />
                             </Grid.Col>
                         ))
                     )
