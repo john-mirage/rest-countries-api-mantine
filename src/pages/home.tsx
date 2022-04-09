@@ -51,7 +51,7 @@ function Home() {
         <>
             <ToolBar countries={allCountries} handleRegion={setRegion} />
             <Grid gutter={40}>
-                {isLoading && isEmpty(countries)
+                {isLoading || isEmpty(countries)
                     ? (
                         range(30).map((index) => (
                             <Grid.Col span={4} key={index}>
