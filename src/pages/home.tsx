@@ -6,12 +6,22 @@ import UseCountries from "@hooks/use-countries";
 import { Grid } from "@mantine/core";
 import { isEmpty, range } from "lodash";
 
+const COUNTRIES_API_URL = "https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code";
+
 function Home() {
-    const [{ countries, isLoading, isError }, setPage] = UseCountries();
+    const [{ allCountries, countries, isLoading, isError }, setUrl, setPage] = UseCountries(COUNTRIES_API_URL);
+
+    function handleRegion(newRegion: string | undefined) {
+        if (!!newRegion) {
+            setUrl(`https://restcountries.com/v2/region/${newRegion}?fields=name,population,region,capital,flags,alpha3Code`);
+        } else {
+            setUrl(COUNTRIES_API_URL);
+        }
+    }
 
     return (
         <>
-            <ToolBar countries={countries} />
+            <ToolBar countries={allCountries} handleRegion={handleRegion} />
             <Grid gutter={40}>
                 {isLoading && isEmpty(countries)
                     ? (

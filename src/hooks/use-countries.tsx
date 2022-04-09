@@ -1,14 +1,23 @@
 import axios from "axios";
-import { chunk, flatten } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-function UseCountries() {
+const COUNTRIES_PER_PAGES = 30;
+
+function getPageNumber(countryNumber: number) {
+    const division = (countryNumber / COUNTRIES_PER_PAGES);
+    const hasMore = (countryNumber % COUNTRIES_PER_PAGES) !== 0;
+    const basePageNumber = Math.floor(division);
+    return hasMore ? (basePageNumber + 1) : basePageNumber;
+}
+
+function UseCountries(initialUrl: string) {
+    const [url, setUrl] = useState(initialUrl);
+    const [allCountries, setAllCountries] = useState([]);
     const [countries, setCountries] = useState([]);
-    const [pages, setPages] = useState([[]]);
-    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(0);
+    const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
-    const didMount = useRef(false);
 
     useEffect(() => {
         let didCancel = false;
@@ -16,9 +25,13 @@ function UseCountries() {
             setIsError(false);
             setIsLoading(true);
             try {
-                const result = await axios("https://restcountries.com/v2/all?fields=name,population,region,capital,flags,alpha3Code");
+                const { data } = await axios(url);
                 if (!didCancel) {
-                    setPages(chunk(result.data, 30));
+                    const pageNumber = getPageNumber(data.length);
+                    setPages(pageNumber);
+                    setAllCountries(data);
+                    if(page > 0) setPage(0);
+                    setPage(1);
                 }
             } catch (error) {
                 setIsError(true);
@@ -29,17 +42,21 @@ function UseCountries() {
         return () => {
             didCancel = true;
         };
-    }, []);
+    }, [url]);
 
     useEffect(() => {
-        if (didMount.current) {
-            setCountries(flatten(pages.slice(0, page)));
-        } else {
-            didMount.current = true;
+        if (page > 0) {
+            if (page < pages) {
+                const countryNumber = page * COUNTRIES_PER_PAGES;
+                const pageCountries = allCountries.slice(0, countryNumber);
+                setCountries(pageCountries);
+            } else if (page === pages) {
+                setCountries(allCountries);
+            }
         }
-    }, [pages, page]);
+    }, [page]);
 
-    return [{ countries, isLoading, isError }, setPage];
+    return [{ allCountries, countries, isLoading, isError }, setUrl, setPage];
 }
 
 export default UseCountries;

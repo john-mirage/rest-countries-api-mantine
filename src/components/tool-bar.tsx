@@ -1,12 +1,13 @@
-import { Select, MultiSelect, Group } from "@mantine/core";
+import { Select, Group } from "@mantine/core";
 import SearchIcon from "@components/icons/search-icon";
 import { HomeCountry } from "@customTypes/country";
 
 interface ToolBarProps {
     countries: HomeCountry[];
+    handleRegion: (newRegion: string) => void;
 }
 
-function ToolBar({ countries }: ToolBarProps) {
+function ToolBar({ countries, handleRegion }: ToolBarProps) {
     return (
         <Group position="apart" align="center" sx={{ marginBottom: 32 }}>
             <Select
@@ -19,7 +20,7 @@ function ToolBar({ countries }: ToolBarProps) {
                 onChange={(value) => console.log(value)}
                 maxDropdownHeight={148}
             />
-            <MultiSelect
+            <Select
                 data={[
                     { value: 'africa', label: 'Africa' },
                     { value: 'americas', label: 'America' },
@@ -29,6 +30,7 @@ function ToolBar({ countries }: ToolBarProps) {
                 ]}
                 placeholder="Filter by Region"
                 clearable
+                onChange={handleRegion}
             />
         </Group>
     );
