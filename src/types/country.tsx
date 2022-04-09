@@ -16,6 +16,11 @@ interface Flag {
     svg: string;
 }
 
+interface BorderCountry {
+    name: string;
+    alpha3Code: string;
+}
+
 export interface HomeCountry {
     name: string;
     population: number;
@@ -35,6 +40,6 @@ export interface Country {
     topLevelDomain: string[];
     currencies: Currency[];
     languages: Language[];
-    borders: string[];
+    borders: BorderCountry[];
     flag: string;
 }

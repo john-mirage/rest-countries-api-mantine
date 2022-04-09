@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function UseCountry(countryCode: string) {
+function UseCountry(initialCountryCode: string) {
+    const [countryCode, setCountryCode] = useState(initialCountryCode);
     const [country, setCountry] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -18,7 +19,7 @@ function UseCountry(countryCode: string) {
                     return borderResult.data;
                 }));
                 if (!didCancel) {
-                    setCountry({...countryResult, borders: borderCountries });
+                    setCountry({...countryResult.data, borders: borderCountries });
                 }
             } catch (error) {
                 setIsError(true);
@@ -29,9 +30,9 @@ function UseCountry(countryCode: string) {
         return () => {
             didCancel = true;
         };
-    }, []);
+    }, [countryCode]);
 
-    return { country, isLoading, isError };
+    return [{ country, isLoading, isError }, setCountryCode];
 }
 
 export default UseCountry;
