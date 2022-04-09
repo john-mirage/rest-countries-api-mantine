@@ -7,7 +7,7 @@ import { Grid } from "@mantine/core";
 import { isEmpty, range } from "lodash";
 
 function Home() {
-    const { countries, isLoading, isError} = UseCountries();
+    const [{ countries, isLoading, isError }, setPage] = UseCountries();
 
     return (
         <>
