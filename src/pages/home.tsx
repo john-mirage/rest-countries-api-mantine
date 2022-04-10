@@ -51,7 +51,7 @@ function Home() {
             <Grid gutter={40}>
                 {isLoading || isEmpty(countries)
                     ? (
-                        range(30).map((index) => (
+                        range(COUNTRIES_PER_PAGE).map((index) => (
                             <Grid.Col span={4} key={index}>
                                 <CountryCardSkeleton />
                             </Grid.Col>

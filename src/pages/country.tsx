@@ -1,5 +1,6 @@
 import CountryView from "@components/country-view";
 import CountryViewSkeleton from "@components/country-view-skeleton";
+import ArrowIcon from "@components/icons/arrow-icon";
 import UseCountry from "@hooks/use-country";
 import { Button } from "@mantine/core";
 import { isEmpty } from "lodash";
@@ -21,7 +22,7 @@ function Country() {
     return (
         <>
             <Link to="/rest-countries-api-mantine/">
-                <Button>Back</Button>
+                <Button color="gray" leftIcon={<ArrowIcon />}>Back</Button>
             </Link>
             <CountryView country={country} />
         </>
