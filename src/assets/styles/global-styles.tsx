@@ -9,7 +9,7 @@ function GlobalStyles() {
                 },
                 body: {
                     margin: 0,
-                    backgroundColor: theme.colors.dark[9],
+                    backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
                 },
             })}
         />

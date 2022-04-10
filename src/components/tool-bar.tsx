@@ -22,6 +22,7 @@ function ToolBar({ countries, handleRegion }: ToolBarProps) {
                 rightSectionWidth={0}
                 onChange={(value) => navigate(`/rest-countries-api-mantine/country/${value}`)}
                 maxDropdownHeight={300}
+                shadow="lg"
             />
             <Select
                 data={[
@@ -34,6 +35,7 @@ function ToolBar({ countries, handleRegion }: ToolBarProps) {
                 placeholder="Filter by Region"
                 clearable
                 onChange={handleRegion}
+                shadow="lg"
             />
         </Group>
     );

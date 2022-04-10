@@ -1,19 +1,30 @@
 import GlobalStyles from "@assets/styles/global-styles";
 import TopAppBar from "@components/top-app-bar";
-import { Box, Container, MantineProvider } from "@mantine/core";
+import { Box, ColorScheme, ColorSchemeProvider, Container, MantineProvider } from "@mantine/core";
 import { Outlet } from "react-router-dom";
+import theme from "@assets/styles/theme";
+import { useLocalStorage } from "@mantine/hooks";
 
 function App() {
+    const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+        key: 'mantine-color-scheme',
+        defaultValue: 'light',
+        getInitialValueInEffect: true,
+    });
+    const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
     return (
-        <MantineProvider theme={{ fontFamily: 'Nunito Sans, sans serif', colorScheme: "dark" }}>
-            <GlobalStyles />
-            <TopAppBar />
-            <Box component="main">
-                <Container>
-                    <Outlet />
-                </Container>
-            </Box>
-        </MantineProvider>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+            <MantineProvider theme={{...theme, colorScheme}}>
+                <GlobalStyles />
+                <TopAppBar />
+                <Box component="main">
+                    <Container>
+                        <Outlet />
+                    </Container>
+                </Box>
+            </MantineProvider>
+        </ColorSchemeProvider>
     );
 }
 

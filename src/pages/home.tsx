@@ -4,18 +4,18 @@ import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
 import { Box, Grid } from "@mantine/core";
+import { useIntersection } from "@mantine/hooks";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 
-const COUNTRIES_PER_PAGE = 30;
+const COUNTRIES_PER_PAGE = 15;
 
 function Home() {
     const [{ allCountries, countries, isLoading, isError }, setRegion] = UseCountries();
     const [pageNumber, setPageNumber] = useState(0);
     const [page, setPage] = useState(0);
     const [pageCountries, setPageCountries] = useState([]);
-    const { ref, inView } = useInView();
+    const [ref, observer] = useIntersection();
 
     useEffect(() => {
         if (countries.length > 0) {
@@ -30,11 +30,9 @@ function Home() {
     useEffect(() => {
         if (page > 0) {
             if (page < pageNumber) {
-                console.log(`page: ${page} // pageNumber: ${pageNumber}`)
                 const countryNumber = page * COUNTRIES_PER_PAGE;
                 const newpageCountries = countries.slice(0, countryNumber);
                 setPageCountries(newpageCountries);
-                
             } else {
                 setPageCountries(countries);
             }
@@ -42,12 +40,10 @@ function Home() {
     }, [countries, page, pageNumber]);
 
     useEffect(() => {
-        if (inView) {
-            if (page < pageNumber) {
-                setPage(page + 1);
-            }
+        if (observer?.isIntersecting && page < pageNumber) {
+            setPage(page + 1);
         }
-    }, [inView]);
+    }, [observer?.isIntersecting]);
 
     return (
         <>
