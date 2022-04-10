@@ -1,4 +1,4 @@
-import { Select, Group } from "@mantine/core";
+import { Select, Group, createStyles } from "@mantine/core";
 import SearchIcon from "@components/icons/search-icon";
 import { HomeCountry } from "@customTypes/country";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,33 @@ interface ToolBarProps {
     handleRegion: (newRegion: string) => void;
 }
 
+const useStyles = createStyles((theme) => ({
+    bar: {
+        marginBottom: 40,
+    },
+    search: {
+        width: "100%",
+        marginBottom: 40,
+    },
+    filter: {
+        width: 200,
+    },
+    input: {
+        height: 48,
+    },
+}));
+
 function ToolBar({ countries, handleRegion }: ToolBarProps) {
+    const { classes } = useStyles();
     const navigate = useNavigate();
 
     return (
-        <Group position="apart" align="center" sx={{ marginBottom: 32 }}>
+        <Group className={classes.bar} position="apart" align="center">
             <Select
+                classNames={{
+                    root: classes.search,
+                    input: classes.input,
+                }}
                 placeholder="Search a country"
                 searchable
                 nothingFound="No country found"
@@ -25,6 +46,10 @@ function ToolBar({ countries, handleRegion }: ToolBarProps) {
                 shadow="lg"
             />
             <Select
+                classNames={{
+                    root: classes.filter,
+                    input: classes.input,
+                }}
                 data={[
                     { value: 'africa', label: 'Africa' },
                     { value: 'americas', label: 'America' },

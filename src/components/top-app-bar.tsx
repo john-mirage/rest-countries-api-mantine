@@ -42,7 +42,7 @@ function TopAppBar() {
     return (
         <Paper className={classes.bar} component="header" shadow="lg">
             <Container className={classes.container}>
-                <Text className={classes.title}>Where in the world?</Text>
+                <Text className={classes.title} component="h1">Where in the world?</Text>
                 <Button
                     classNames={{
                         root: classes.button,

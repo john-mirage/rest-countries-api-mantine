@@ -3,14 +3,26 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Box, Grid } from "@mantine/core";
+import { Box, createStyles, Grid } from "@mantine/core";
 import { useIntersection } from "@mantine/hooks";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
 
 const COUNTRIES_PER_PAGE = 15;
 
+const useStyles = createStyles((theme) => ({
+    grid: {
+        paddingLeft: 40,
+        paddingRight: 40,
+    },
+    moreTrigger: {
+        width: "100%",
+        height: 64,
+    }
+}));
+
 function Home() {
+    const { classes } = useStyles();
     const [{ allCountries, countries, isLoading, isError }, setRegion] = UseCountries();
     const [pageNumber, setPageNumber] = useState(0);
     const [page, setPage] = useState(0);
@@ -48,25 +60,25 @@ function Home() {
     return (
         <>
             <ToolBar countries={allCountries} handleRegion={setRegion} />
-            <Grid gutter={40}>
+            <Grid className={classes.grid} gutter={40}>
                 {isLoading || isEmpty(countries)
                     ? (
                         range(COUNTRIES_PER_PAGE).map((index) => (
-                            <Grid.Col span={4} key={index}>
+                            <Grid.Col key={index}>
                                 <CountryCardSkeleton />
                             </Grid.Col>
                         ))
                     )
                     : (
                         pageCountries.map((country: HomeCountry) => (
-                            <Grid.Col span={4} key={country.alpha3Code}>
+                            <Grid.Col key={country.alpha3Code}>
                                 <CountryCard country={country} />
                             </Grid.Col>
                         ))
                     )
                 }
             </Grid>
-            <Box ref={ref} sx={{ height: 64 }} />
+            <Box className={classes.moreTrigger} ref={ref} />
         </>
     );
 }
