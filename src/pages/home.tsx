@@ -57,8 +57,10 @@ function Home() {
     const endPage = ((pagination.active - 1) * COUNTRIES_PER_PAGE) + COUNTRIES_PER_PAGE;
 
     function handlePageChange(newPage: number) {
-        scrollTo({ y: 0 });
-        setPage(newPage);
+        if (page !== newPage) {
+            scrollTo({ y: 0 });
+            setPage(newPage);
+        }
     }
 
     return (
@@ -70,7 +72,6 @@ function Home() {
             <SimpleGrid
                 className={classes.grid}
                 breakpoints={[
-                    { maxWidth: "xs", cols: 1, spacing: 40 },
                     { minWidth: "xs", cols: 1, spacing: 40 },
                     { minWidth: "sm", cols: 2, spacing: 40 },
                     { minWidth: "md", cols: 3, spacing: 40 },
