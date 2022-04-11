@@ -20,6 +20,11 @@ const useStyles = createStyles((theme) => ({
         fontWeight: 800,
         lineHeight: "20px",
         letterSpacing: -0.2,
+
+        [`@media screen and (min-width: ${theme.breakpoints.md}px)`]: {
+            fontSize: 24,
+            lineHeight: "34px",
+        },
     },
     button: {
         padding: "0 8px",
@@ -29,6 +34,10 @@ const useStyles = createStyles((theme) => ({
         fontSize: 12,
         fontWeight: 600,
         letterSpacing: -0.2,
+
+        [`@media screen and (min-width: ${theme.breakpoints.md}px)`]: {
+            fontSize: 16,
+        },
     },
     buttonLeftIcon: {
         width: 14,

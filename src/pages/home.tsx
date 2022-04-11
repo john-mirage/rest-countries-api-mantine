@@ -3,12 +3,12 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Box, createStyles, SimpleGrid } from "@mantine/core";
-import { useIntersection } from "@mantine/hooks";
+import { Box, Center, createStyles, Pagination, SimpleGrid } from "@mantine/core";
+import { useIntersection, usePagination, useWindowScroll } from "@mantine/hooks";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
 
-const COUNTRIES_PER_PAGE = 15;
+const COUNTRIES_PER_PAGE = 20;
 
 const useStyles = createStyles((theme) => ({
     grid: {
@@ -23,49 +23,50 @@ const useStyles = createStyles((theme) => ({
     },
     moreTrigger: {
         width: "100%",
-        height: 64,
+        height: 128,
     }
 }));
+
+function getPageTotal(dataNumber: number) {
+    const division = (dataNumber / COUNTRIES_PER_PAGE);
+    const hasMore = (dataNumber % COUNTRIES_PER_PAGE) !== 0;
+    const basePageNumber = Math.floor(division);
+    return hasMore ? (basePageNumber + 1) : basePageNumber;
+}
 
 function Home() {
     const { classes } = useStyles();
     const [{ allCountries, countries, isLoading, isError }, setRegion] = UseCountries();
-    const [pageNumber, setPageNumber] = useState(0);
-    const [page, setPage] = useState(0);
-    const [pageCountries, setPageCountries] = useState([]);
-    const [ref, observer] = useIntersection();
+    const [pageTotal, setPageTotal] = useState(0);
+    const [page, setPage] = useState(1);
+    const [scroll, scrollTo] = useWindowScroll();
+
+    const pagination = usePagination({
+        total: pageTotal,
+        page: page,
+        onChange: setPage,
+    });
 
     useEffect(() => {
-        if (countries.length > 0) {
-            const division = (countries.length / COUNTRIES_PER_PAGE);
-            const hasMore = (countries.length % COUNTRIES_PER_PAGE) !== 0;
-            const basePageNumber = Math.floor(division);
-            setPageNumber(hasMore ? (basePageNumber + 1) : basePageNumber);
-            setPage(1);
-        }
+        const total = getPageTotal(countries.length);
+        setPageTotal(total);
+        setPage(1);
     }, [countries]);
 
-    useEffect(() => {
-        if (page > 0) {
-            if (page < pageNumber) {
-                const countryNumber = page * COUNTRIES_PER_PAGE;
-                const newpageCountries = countries.slice(0, countryNumber);
-                setPageCountries(newpageCountries);
-            } else {
-                setPageCountries(countries);
-            }
-        }
-    }, [countries, page, pageNumber]);
+    const startPage = (pagination.active - 1) * COUNTRIES_PER_PAGE;
+    const endPage = ((pagination.active - 1) * COUNTRIES_PER_PAGE) + COUNTRIES_PER_PAGE;
 
-    useEffect(() => {
-        if (observer?.isIntersecting && page < pageNumber) {
-            setPage(page + 1);
-        }
-    }, [observer?.isIntersecting]);
+    function handlePageChange(newPage: number) {
+        scrollTo({ y: 0 });
+        setPage(newPage);
+    }
 
     return (
         <>
-            <ToolBar countries={allCountries} handleRegion={setRegion} />
+            <ToolBar
+                countries={allCountries}
+                handleRegion={setRegion}
+            />
             <SimpleGrid
                 className={classes.grid}
                 breakpoints={[
@@ -83,13 +84,19 @@ function Home() {
                         ))
                     )
                     : (
-                        pageCountries.map((country: HomeCountry) => (
+                        countries.slice(startPage, endPage).map((country: HomeCountry) => (
                             <CountryCard key={country.alpha3Code} country={country} />
                         ))
                     )
                 }
             </SimpleGrid>
-            <Box className={classes.moreTrigger} ref={ref} />
+            <Center my={48}>
+                <Pagination
+                    total={pageTotal}
+                    page={page}
+                    onChange={handlePageChange}
+                />
+            </Center>
         </>
     );
 }

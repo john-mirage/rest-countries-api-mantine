@@ -1,5 +1,6 @@
 import { HomeCountry } from "@customTypes/country";
 import { Card, createStyles, Text } from "@mantine/core";
+import { forwardRef } from "react";
 
 interface CountryCardProps {
     country: HomeCountry;
@@ -48,11 +49,11 @@ const useStyles = createStyles((theme) => ({
 
 const formatter = new Intl.NumberFormat("en-US");
 
-function CountryCard({ country }: CountryCardProps) {
+const CountryCard = forwardRef(({ country }: CountryCardProps, ref) => {
     const { classes } = useStyles();
 
     return (
-        <Card className={classes.card} shadow="sm">
+        <Card ref={ref} className={classes.card} shadow="sm">
             <Card.Section mb={16} component="a" href={`/rest-countries-api-mantine/country/${country.alpha3Code}`}>
                 <div className={classes.imageContainer}>
                     <img className={classes.image} src={country.flags.png} alt={`${country.name} flag`} />
@@ -81,6 +82,6 @@ function CountryCard({ country }: CountryCardProps) {
             </Text>
         </Card>
     );
-}
+});
 
 export default CountryCard;
