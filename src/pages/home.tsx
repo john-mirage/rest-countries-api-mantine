@@ -3,7 +3,7 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Box, createStyles, Grid } from "@mantine/core";
+import { Box, createStyles, SimpleGrid } from "@mantine/core";
 import { useIntersection } from "@mantine/hooks";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
@@ -14,6 +14,10 @@ const useStyles = createStyles((theme) => ({
     grid: {
         paddingLeft: 40,
         paddingRight: 40,
+
+        [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+            padding: 0,
+        },
     },
     moreTrigger: {
         width: "100%",
@@ -60,24 +64,27 @@ function Home() {
     return (
         <>
             <ToolBar countries={allCountries} handleRegion={setRegion} />
-            <Grid className={classes.grid} gutter={40}>
+            <SimpleGrid
+                className={classes.grid}
+                breakpoints={[
+                    { minWidth: "sm", cols: 2, spacing: 40 },
+                    { minWidth: "md", cols: 3, spacing: 40 },
+                    { minWidth: "xl", cols: 4, spacing: 40 },
+                ]}
+            >
                 {isLoading || isEmpty(countries)
                     ? (
                         range(COUNTRIES_PER_PAGE).map((index) => (
-                            <Grid.Col key={index}>
-                                <CountryCardSkeleton />
-                            </Grid.Col>
+                            <CountryCardSkeleton key={index} />
                         ))
                     )
                     : (
                         pageCountries.map((country: HomeCountry) => (
-                            <Grid.Col key={country.alpha3Code}>
-                                <CountryCard country={country} />
-                            </Grid.Col>
+                            <CountryCard key={country.alpha3Code} country={country} />
                         ))
                     )
                 }
-            </Grid>
+            </SimpleGrid>
             <Box className={classes.moreTrigger} ref={ref} />
         </>
     );

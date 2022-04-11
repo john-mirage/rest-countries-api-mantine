@@ -1,9 +1,10 @@
 import GlobalStyles from "@assets/styles/global-styles";
 import TopAppBar from "@components/top-app-bar";
-import { Box, ColorScheme, ColorSchemeProvider, Container, MantineProvider } from "@mantine/core";
+import { Box, ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 import theme from "@assets/styles/theme";
 import { useLocalStorage } from "@mantine/hooks";
+import Container from "@components/container";
 
 function App() {
     const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({

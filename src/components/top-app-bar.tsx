@@ -1,6 +1,7 @@
-import { Container, Paper, Button, useMantineColorScheme, createStyles, Text } from "@mantine/core";
+import { Paper, Button, useMantineColorScheme, createStyles, Text } from "@mantine/core";
 import MoonIcon from "@components/icons/moon-icon";
 import MoonOutlinedIcon from "@components/icons/moon-outlined-icon";
+import Container from "@components/container";
 
 const useStyles = createStyles((theme) => ({
     bar: {
@@ -41,7 +42,7 @@ function TopAppBar() {
 
     return (
         <Paper className={classes.bar} component="header" shadow="lg">
-            <Container className={classes.container}>
+            <Container topAppBar>
                 <Text className={classes.title} component="h1">Where in the world?</Text>
                 <Button
                     classNames={{
