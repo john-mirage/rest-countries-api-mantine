@@ -12,8 +12,10 @@ const COUNTRIES_PER_PAGE = 15;
 
 const useStyles = createStyles((theme) => ({
     grid: {
-        paddingLeft: 40,
-        paddingRight: 40,
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+            paddingLeft: 40,
+            paddingRight: 40,
+        },
 
         [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
             padding: 0,
@@ -67,9 +69,11 @@ function Home() {
             <SimpleGrid
                 className={classes.grid}
                 breakpoints={[
+                    { maxWidth: "xs", cols: 1, spacing: 40 },
+                    { minWidth: "xs", cols: 1, spacing: 40 },
                     { minWidth: "sm", cols: 2, spacing: 40 },
                     { minWidth: "md", cols: 3, spacing: 40 },
-                    { minWidth: "xl", cols: 4, spacing: 40 },
+                    { minWidth: "xl", cols: 4, spacing: 75 },
                 ]}
             >
                 {isLoading || isEmpty(countries)

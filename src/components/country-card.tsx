@@ -1,5 +1,5 @@
 import { HomeCountry } from "@customTypes/country";
-import { Card, createStyles, Image, Text, Title } from "@mantine/core";
+import { Card, createStyles, Text } from "@mantine/core";
 
 interface CountryCardProps {
     country: HomeCountry;
@@ -8,6 +8,24 @@ interface CountryCardProps {
 const useStyles = createStyles((theme) => ({
     card: {
         height: "100%",
+    },
+    imageContainer: {
+        position: "relative",
+        width: "100%",
+        paddingBottom: "65%",
+
+        [`@media screen and (min-width: ${theme.breakpoints.sm}px)`]: {
+            padding: 0,
+            height: 160,
+        },
+    },
+    image: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
     },
     title: {
         fontSize: 18,
@@ -36,7 +54,9 @@ function CountryCard({ country }: CountryCardProps) {
     return (
         <Card className={classes.card} shadow="sm">
             <Card.Section mb={16} component="a" href={`/rest-countries-api-mantine/country/${country.alpha3Code}`}>
-                <Image src={country.flags.png} height={160} fit="cover" />
+                <div className={classes.imageContainer}>
+                    <img className={classes.image} src={country.flags.png} alt={`${country.name} flag`} />
+                </div>
             </Card.Section>
             <Text className={classes.title}>
                 {country.name}

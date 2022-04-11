@@ -15,6 +15,11 @@ const useStyles = createStyles((theme) => ({
     search: {
         width: "100%",
         marginBottom: 40,
+
+        [`@media screen and (min-width: ${theme.breakpoints.md}px)`]: {
+            width: 480,
+            marginBottom: 0,
+        },
     },
     filter: {
         width: 200,
