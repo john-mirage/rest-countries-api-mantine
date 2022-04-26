@@ -63,22 +63,13 @@ const CountryCard = forwardRef(({ country }: CountryCardProps, ref) => {
                 {country.name}
             </Text>
             <Text className={classes.property}>
-                Population: 
-                <Text className={classes.value} component="span">
-                    {formatter.format(country.population)}
-                </Text>
+                Population: <Text className={classes.value} component="span">{formatter.format(country.population)}</Text>
             </Text>
             <Text className={classes.property}>
-                Region: 
-                <Text className={classes.value} component="span">
-                    {country.region}
-                </Text>
+                Region: <Text className={classes.value} component="span">{country.region}</Text>
             </Text>
             <Text className={classes.property}>
-                Capital: 
-                <Text className={classes.value} component="span">
-                    {country.capital}
-                </Text>
+                Capital: <Text className={classes.value} component="span">{country.capital}</Text>
             </Text>
         </Card>
     );

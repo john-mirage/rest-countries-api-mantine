@@ -3,8 +3,8 @@ import CountryCardSkeleton from "@components/country-card-skeleton";
 import ToolBar from "@components/tool-bar";
 import { HomeCountry } from "@customTypes/country";
 import UseCountries from "@hooks/use-countries";
-import { Box, Center, createStyles, Pagination, SimpleGrid } from "@mantine/core";
-import { useIntersection, usePagination, useWindowScroll } from "@mantine/hooks";
+import { Center, createStyles, Pagination, SimpleGrid } from "@mantine/core";
+import { usePagination, useWindowScroll } from "@mantine/hooks";
 import { isEmpty, range } from "lodash";
 import { useEffect, useState } from "react";
 
@@ -21,10 +21,6 @@ const useStyles = createStyles((theme) => ({
             padding: 0,
         },
     },
-    moreTrigger: {
-        width: "100%",
-        height: 128,
-    }
 }));
 
 function getPageTotal(dataNumber: number) {
