@@ -46,7 +46,7 @@ function ToolBar({ countries, handleRegion }: ToolBarProps) {
                 data={countries.map((country) => ({ value: country.alpha3Code, label: country.name }))}
                 icon={<SearchIcon />}
                 rightSectionWidth={0}
-                onChange={(value) => navigate(`/rest-countries-api-mantine/country/${value}`)}
+                onChange={(value) => navigate(`country/${value}`)}
                 maxDropdownHeight={300}
                 shadow="lg"
             />
