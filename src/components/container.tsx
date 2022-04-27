@@ -38,7 +38,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-function Container({ children, topAppBar }: PropsWithChildren<{ topAppBar: boolean }>) {
+function Container({ children, topAppBar }: PropsWithChildren<{ topAppBar?: boolean }>) {
     const { classes, cx } = useStyles();
 
     return (

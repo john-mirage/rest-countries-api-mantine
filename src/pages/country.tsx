@@ -21,7 +21,7 @@ function Country() {
 
     return (
         <>
-            <Link to="/rest-countries-api-mantine/">
+            <Link to="/">
                 <Button color="gray" leftIcon={<ArrowIcon />}>Back</Button>
             </Link>
             <CountryView country={country} />

@@ -1,6 +1,7 @@
 import { HomeCountry } from "@customTypes/country";
 import { Card, createStyles, Text } from "@mantine/core";
 import { forwardRef } from "react";
+import {Link} from "react-router-dom";
 
 interface CountryCardProps {
     country: HomeCountry;
@@ -54,10 +55,12 @@ const CountryCard = forwardRef(({ country }: CountryCardProps, ref) => {
 
     return (
         <Card ref={ref} className={classes.card} shadow="sm">
-            <Card.Section mb={16} component="a" href={`/rest-countries-api-mantine/country/${country.alpha3Code}`}>
-                <div className={classes.imageContainer}>
-                    <img className={classes.image} src={country.flags.png} alt={`${country.name} flag`} />
-                </div>
+            <Card.Section mb={16}>
+                <Link to={`country/${country.alpha3Code}`}>
+                    <div className={classes.imageContainer}>
+                        <img className={classes.image} src={country.flags.png} alt={`${country.name} flag`} />
+                    </div>
+                </Link>
             </Card.Section>
             <Text className={classes.title}>
                 {country.name}

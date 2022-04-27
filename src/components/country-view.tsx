@@ -35,7 +35,7 @@ function CountryView({ country }: CountryViewProps) {
                     <Group>
                         <Text weight={600}>Border countries:</Text>
                         {country.borders.map((country) => (
-                            <Link key={country.alpha3Code} to={`/rest-countries-api-mantine/country/${country.alpha3Code}`}>
+                            <Link key={country.alpha3Code} to={`/country/${country.alpha3Code}`}>
                                 <Button color="gray">{country.name}</Button>
                             </Link>
                         ))}
